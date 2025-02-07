@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
     public float movementFrequency = 0.8f;
     private float passedTime = 0;
     private GameObject currentTetromino;
-
+    private bool IsGameOver = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +19,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        passedTime += Time.deltaTime;
-        if (passedTime >= movementFrequency)
+        if (IsGameOver == false)
         {
-            passedTime -= movementFrequency;
-            MoveTetromino(Vector3.down);
+            passedTime += Time.deltaTime;
+            if (passedTime >= movementFrequency)
+            {
+                passedTime -= movementFrequency;
+                MoveTetromino(Vector3.down);
+            }
+              UserInput();
         }
-        UserInput();
     }
     void UserInput()
     {
@@ -57,6 +61,7 @@ public class GameManager : MonoBehaviour
     {
         int index = Random.Range(0, Tetrominos.Length);
         currentTetromino = Instantiate(Tetrominos[index], new Vector3(5, 17, 0), Quaternion.identity);    //Location at top to spawn in
+        CheckGameOver();
     }
     void MoveTetromino(Vector3 direction)
     {
@@ -79,5 +84,13 @@ public class GameManager : MonoBehaviour
     void CheckForLines()
     {
         GetComponent<GridScript>().CheckForLines();
+    }
+    void CheckGameOver()
+    {
+        if (IsValidPosition() == false)
+        {
+            IsGameOver = true;
+        }
+   
     }
 }

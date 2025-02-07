@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviour
         if (IsValidPosition() == false)
         {
             IsGameOver = true;
+            // load screen in unity
         }
    
     }
